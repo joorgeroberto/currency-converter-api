@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 import Currency from '../typeorm/entities/Currency';
-import { CurrencyRepository } from '../typeorm/repositories/CurrencyRepositories';
+import CurrencyRepository from '../typeorm/repositories/CurrencyRepositories';
 
 class ListCurrencyService {
   public async execute(): Promise<Currency[]> {

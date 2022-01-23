@@ -11,9 +11,6 @@ class Currency {
   name: string;
 
   @Column()
-  price: string;
-
-  @Column()
   symbol: string;
 
   @CreateDateColumn()
