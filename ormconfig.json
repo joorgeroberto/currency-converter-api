@@ -5,6 +5,9 @@
   "username": "postgres",
   "password": "docker",
   "database": "currency-converter-api",
+  "entities": [
+    "./src/modules/**/typeorm/entities/*.ts"
+  ],
   "migrations": [
     "./src/shared/typeorm/migrations/*.ts"
   ],
