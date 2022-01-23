@@ -6,6 +6,7 @@ build/
 temp/
 .env
 coverage
+apiToken.ts
 # ormconfig.json
 dist
 
