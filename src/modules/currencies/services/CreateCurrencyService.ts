@@ -10,7 +10,7 @@ interface IRequest {
 }
 
 class CreateCurrencyService {
-  public async execute([{ id, name, symbol }: IRequest]): Promise<Currency> {
+  public async execute({ id, name, symbol }: IRequest): Promise<Currency> {
     const currencyRepository = getCustomRepository(CurrencyRepository);
 
     const currencyExists = await currencyRepository.findById(id);
