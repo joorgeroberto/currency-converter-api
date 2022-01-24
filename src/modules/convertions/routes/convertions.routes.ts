@@ -7,7 +7,7 @@ import verifyIfCurrenciesExists from '../middlewares/verifyIfCurrenciesExists';
 const convertionsRouter = Router();
 const convertionsController = new ConvertionsController();
 
-// convertionsRouter.get('/', convertionsController.index);
+convertionsRouter.get('/', convertionsController.index);
 
 convertionsRouter.get(
   '/:id',
@@ -19,6 +19,18 @@ convertionsRouter.get(
     },
   }),
   convertionsController.show,
+);
+
+convertionsRouter.delete(
+  '/:id',
+  verifyIdFormat,
+  verifyIfCurrenciesExists,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  convertionsController.delete,
 );
 
 export default convertionsRouter;

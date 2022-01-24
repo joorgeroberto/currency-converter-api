@@ -10,10 +10,6 @@ interface IRequest {
   id: string;
 }
 
-interface iData {
-  xxx: string;
-}
-
 class CreateConvertionService {
   public async execute({ id }: IRequest): Promise<Convertion> {
     const [from, to] = id.split('_');
@@ -25,24 +21,39 @@ class CreateConvertionService {
       throw new AppError('Convertion already exists!');
     }
 
-    const yesterdayDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
-
-    let todayValue: any;
+    let todayValue: number;
     try {
-      const { data } = await Api.get(`/convert?q=${to}_${from}&compact=ultra&apiKey=${apiToken}`);
-      todayValue = data;
+      const { data } = await Api.get<any>(
+        `/convert?q=${to}_${from}&compact=ultra&apiKey=${apiToken}`,
+      );
+      todayValue = data[Object.keys(data)[0]];
     } catch (error) {
       if (error instanceof Error) {
         throw new AppError('Convertion internal error!');
       }
+      throw new AppError('Convertion internal error!');
+    }
+
+    let yesterdayValue: number;
+    const yesterdayDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+
+    try {
+      const { data } = await Api.get<any>(
+        `/convert?q=${to}_${from}&compact=ultra&apiKey=${apiToken}&date=${yesterdayDate}`,
+      );
+      const auxValue = data[Object.keys(data)[0]];
+      yesterdayValue = auxValue[Object.keys(auxValue)[0]];
+    } catch (error) {
+      if (error instanceof Error) {
         throw new AppError('Convertion internal error!');
       }
+      throw new AppError('Convertion internal error!');
     }
-    // throw new AppError('SUCESSO!');
-
     const convertion = convertionRepository.create({
       to,
       from,
+      today_value: todayValue,
+      yesterday_value: yesterdayValue,
     });
 
     await convertionRepository.save(convertion);
